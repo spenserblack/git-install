@@ -1,4 +1,7 @@
 git_version = `git describe --tags --abbrev=0 --match="v*.*.*"`
+# NOTE Default version if version is not in repo.
+# This can happen with a shallow clone for a CI, for example.
+git_version = 'v0.0.0.dev' if git_version.empty?
 version = /v?(\d+\.\d+\.\d+(?:\..+)?)/.match(git_version)[1]
 
 Gem::Specification.new do |s|
