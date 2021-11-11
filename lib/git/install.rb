@@ -1,13 +1,16 @@
 module Git
   # The main Install driver
   class Install
-    # Print a greeting
-    #
-    # Example:
-    #   >> Git::Install::hello_world
-    #   => Hello, World!
-    def self.hello_world
-      puts "Hello, World!"
+    # The default install path for Unix systems
+    UNIX_BIN = "/usr/local/bin/"
+    # The environment variable to set install path
+    INSTALL_PATH = "GIT_INSTALL_PATH"
+
+    # Gets the path to install the git subcommand to
+    def self.path
+      install_path = ENV[self::INSTALL_PATH]
+      install_path = self::UNIX_BIN if install_path.nil? || install_path.empty?
+      install_path
     end
   end
 end
