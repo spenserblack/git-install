@@ -1,0 +1,19 @@
+root = true
+
+[*]
+end_of_line = LF
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.rb]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+[*.{yaml,yml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+max_line_length = 80
