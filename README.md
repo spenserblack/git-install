@@ -1,5 +1,7 @@
 # `git install`
 
+[![CI](https://github.com/spenserblack/git-install/actions/workflows/ci.yml/badge.svg)](https://github.com/spenserblack/git-install/actions/workflows/ci.yml)
+
 A custom git subcommand to install custom git subcommands
 
 ## Usage
