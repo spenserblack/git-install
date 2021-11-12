@@ -1,3 +1,5 @@
+require 'git'
+
 LINUX_DATA_DIR = File.join ENV['HOME'], '.local', 'share', 'git-install'
 
 module Git
@@ -14,5 +16,15 @@ module Git
       install_path = self::UNIX_BIN if install_path.nil? || install_path.empty?
       install_path
     end
+
+    # Downloads (clones) a repository to the data directory
+    #
+    # Returns Git directory
+    def self.download(url)
+      path = self.path
+      git = Git.clone(url, path: path, depth: 1)
+      File.join path, git.dir.to_s
+    end
+
   end
 end
