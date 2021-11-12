@@ -1,3 +1,5 @@
+LINUX_DATA_DIR = File.join ENV['HOME'], '.local', 'share', 'git-install'
+
 module Git
   # The main Install driver
   class Install
