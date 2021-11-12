@@ -2,4 +2,4 @@
 # frozen_string_literal: true
 require 'git/install'
 
-puts "Should install to #{Git::Install::path}"
+puts "Should install to #{Git::Install.path}"
