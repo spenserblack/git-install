@@ -10,14 +10,14 @@ describe 'Git::Install' do
     it 'should get the default install path' do
       old_env = ENV[INSTALL_PATH]
       ENV[INSTALL_PATH] = nil
-      assert_equal Git::Install.path, "/usr/local/bin/"
+      assert_equal "/usr/local/bin/", Git::Install.path
       ENV[INSTALL_PATH] = old_env
     end
 
     it 'should get the overridden path' do
       old_env = ENV[INSTALL_PATH]
       ENV[INSTALL_PATH] = "~/bin/"
-      assert_equal Git::Install::path, "~/bin/"
+      assert_equal "~/bin/", Git::Install::path
       ENV[INSTALL_PATH] = old_env
     end
   end
