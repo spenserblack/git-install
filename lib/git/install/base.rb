@@ -9,9 +9,9 @@ module Git
 
       # Initializes the installer
       #
-      # The "git" instance can be overridden for testing, but uses the git gem
-      # by default
-      def initialize(git = Git)
+      # For typical usage opts can be ignored, as they are mainly used for
+      # testing with mocks.
+      def initialize(git: Git)
         @git = git
       end
 

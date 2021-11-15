@@ -56,7 +56,7 @@ describe 'Git::Install' do
       url = "https://example.com/whatever/repo.git"
       mock = MiniTest::Mock.new
       mock.expect :clone, FakeBase.new('repo'), [url, 'repo', { path: "/data", depth: 1 }]
-      install = Git::Install::Base.new mock
+      install = Git::Install::Base.new(git: mock)
 
       path = install.download(url, "/data")
       assert_equal "/data/repo", path
