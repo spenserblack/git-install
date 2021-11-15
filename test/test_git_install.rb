@@ -34,22 +34,33 @@ describe 'Git::Install' do
 
   describe 'download' do
     class FakeBase
+      def initialize(name)
+        @name = name
+      end
       class FakeDir
+        def initialize(dir)
+          @dir = dir
+        end
         def to_s
-          "repo"
+          "/data/#{@dir}"
         end
       end
 
       def dir
-        FakeDir.new
+        FakeDir.new(@name)
       end
     end
 
     it 'should call Git.clone' do
-      Git::Install.stub :path, "/data" do
-        Git.stub :clone, FakeBase.new do
-          assert_equal Git::Install.download("repo"), "/data/repo"
-        end
+      url = "https://example.com/whatever/repo.git"
+      mock = MiniTest::Mock.new
+      mock.expect :clone, FakeBase.new('repo'), [url, 'repo', { path: "/data", depth: 1 }]
+      install = Git::Install.new mock
+
+      Git::Install.stub :repo_path, "/data" do
+        path = install.download(url)
+        assert_equal "/data/repo", path
+        mock.verify
       end
     end
   end
