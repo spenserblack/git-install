@@ -1,7 +1,5 @@
 require 'git'
 
-LINUX_DATA_DIR = File.join ENV['HOME'], '.local', 'share', 'git-install'
-
 module Git
   # The main Install driver
   class Install
@@ -15,6 +13,11 @@ module Git
       install_path = ENV[self::INSTALL_PATH]
       install_path = self::UNIX_BIN if install_path.nil? || install_path.empty?
       install_path
+    end
+
+    # Gets the path where the subcommand repositories should be
+    def self.repo_path
+      File.join ENV['HOME'], '.local', 'share', 'git-install'
     end
 
     # Downloads (clones) a repository to the data directory

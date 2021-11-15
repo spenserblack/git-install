@@ -22,6 +22,16 @@ describe 'Git::Install' do
     end
   end
 
+  describe 'repo_path' do
+    it 'should get the Linux clone path' do
+      old_home = ENV['HOME']
+      ENV['HOME'] = '/home/foo'
+      expect = '/home/foo/.local/share/git-install'
+      assert_equal expect, Git::Install.repo_path
+      ENV['HOME'] = old_home
+    end
+  end
+
   describe 'download' do
     class FakeBase
       class FakeDir
