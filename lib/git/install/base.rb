@@ -5,7 +5,7 @@ module Git
     # Base functionality for Git::Install
     class Base
       # Regex for getting repo path name from URL
-      URL_REGEX = /\/(?<name>[\w\d]+)\.git/
+      URL_REGEX = /\/(?<name>\w+)\.git/
 
       # Initializes the installer
       #
