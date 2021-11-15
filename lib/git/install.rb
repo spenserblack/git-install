@@ -1,4 +1,5 @@
 require 'git'
+require 'git/install/base'
 
 module Git
   # The main Install driver
@@ -7,15 +8,6 @@ module Git
     UNIX_BIN = "/usr/local/bin/"
     # The environment variable to set install path
     INSTALL_PATH = "GIT_INSTALL_PATH"
-    # Regex for getting repo path name from URL
-    URL_REGEX = /\/(?<name>[\w\d]+)\.git/
-
-    # Initializes the installer
-    #
-    # The "git" instance can be overridden, but uses the git gem by default
-    def initialize(git = Git)
-      @git = git
-    end
 
     # Gets the path to install the git subcommand to
     def self.path
@@ -29,16 +21,9 @@ module Git
       File.join ENV['HOME'], '.local', 'share', 'git-install'
     end
 
-    # Downloads (clones) a repository to the data directory
-    #
-    # Returns a path to the Git directory
-    def download(url)
-      m = self.class::URL_REGEX.match(url)
-      raise "Cannot match #{url} to get repo name" if m.nil?
-      path = self.class.repo_path
-      git = @git.clone(url, m[:name], path: path, depth: 1)
-      git.dir.to_s
+    def self.download(url)
+      base = self::Base.new
+      base.download(url, self.repo_path)
     end
-
   end
 end

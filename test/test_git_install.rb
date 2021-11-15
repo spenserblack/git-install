@@ -1,4 +1,5 @@
 require 'git/install'
+require 'git/install/base'
 require 'minitest/autorun'
 require 'minitest/mock'
 require 'minitest/spec'
@@ -55,13 +56,11 @@ describe 'Git::Install' do
       url = "https://example.com/whatever/repo.git"
       mock = MiniTest::Mock.new
       mock.expect :clone, FakeBase.new('repo'), [url, 'repo', { path: "/data", depth: 1 }]
-      install = Git::Install.new mock
+      install = Git::Install::Base.new mock
 
-      Git::Install.stub :repo_path, "/data" do
-        path = install.download(url)
-        assert_equal "/data/repo", path
-        mock.verify
-      end
+      path = install.download(url, "/data")
+      assert_equal "/data/repo", path
+      mock.verify
     end
   end
 end
