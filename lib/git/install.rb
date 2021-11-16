@@ -25,5 +25,14 @@ module Git
       base = self::Base.new
       base.download(url, self.repo_path)
     end
+
+    def self.install(url)
+      base = self::Base.new
+      dir = base.download(url, self.repo_path)
+      subcommand = File.basename(dir)
+      source = File.join(dir, subcommand)
+      dest = File.join(self.path, subcommand)
+      base.link(source, dest)
+    end
   end
 end

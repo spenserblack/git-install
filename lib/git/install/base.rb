@@ -11,7 +11,8 @@ module Git
       #
       # For typical usage opts can be ignored, as they are mainly used for
       # testing with mocks.
-      def initialize(git: Git)
+      def initialize(file: File, git: Git)
+        @file = file
         @git = git
       end
 
@@ -23,6 +24,13 @@ module Git
         raise "Cannot match #{url} to get repo name" if m.nil?
         git = @git.clone(url, m[:name], path: repo_path, depth: 1)
         git.dir.to_s
+      end
+
+      # Creates a link to the cloned extension
+      def link(source, dest)
+        absolute_source = @file.absolute_path(source)
+        raise "#{source} is not a file" unless @file.file? absolute_source
+        @file.symlink(absolute_source, dest)
       end
     end
   end

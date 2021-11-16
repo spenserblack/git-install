@@ -63,4 +63,17 @@ describe 'Git::Install' do
       mock.verify
     end
   end
+
+  describe 'link' do
+    it 'should call File.symlink' do
+      mock = MiniTest::Mock.new
+      mock.expect :file?, true, ['/data/git-hello/git-hello']
+      mock.expect :symlink, 0, ['/data/git-hello/git-hello', '/bin/git-hello']
+      mock.expect :absolute_path, '/data/git-hello/git-hello', ['/data/../data/git-hello/git-hello']
+
+      install = Git::Install::Base.new(file: mock)
+      install.link('/data/../data/git-hello/git-hello', '/bin/git-hello')
+      mock.verify
+    end
+  end
 end
