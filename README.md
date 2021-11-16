@@ -17,19 +17,6 @@ which will likely require sudo. To install to a different location,
 set the environment variable `GIT_INSTALL_PATH` (make sure that path
 is also on `PATH`!).
 
-### Upgrading Installed Extensions
-
-```shell
-# Upgrade all subcommands
-git install upgrade
-
-# Upgrade a specific subcommand
-git install upgrade git-example-subcommand
-
-# Upgrade git-install
-git install self upgrade
-```
-
 ## How it Works
 
 `git-install` will perform a shallow clone of the repository.
@@ -45,5 +32,9 @@ or downloaded from another URL (like GitHub release assets)?
 
 - [ ] Support a config file (potentially `.git-config.yaml`) that
   would allow setting custom build instructions and/or download URLs
+- [ ] Support upgrading installed subcommands
+  - [ ] `git install upgrade` to upgrade all
+  - [ ] `git install upgrade git-example-subcommand` to upgrade specific one
+  - [ ] `git install self upgrade` to upgrade self
 
 [git-release]: https://github.com/spenserblack/git-release
