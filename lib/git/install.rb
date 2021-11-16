@@ -1,3 +1,6 @@
+require 'git'
+require 'git/install/base'
+
 module Git
   # The main Install driver
   class Install
@@ -11,6 +14,25 @@ module Git
       install_path = ENV[self::INSTALL_PATH]
       install_path = self::UNIX_BIN if install_path.nil? || install_path.empty?
       install_path
+    end
+
+    # Gets the path where the subcommand repositories should be
+    def self.repo_path
+      File.join ENV['HOME'], '.local', 'share', 'git-install'
+    end
+
+    def self.download(url)
+      base = self::Base.new
+      base.download(url, self.repo_path)
+    end
+
+    def self.install(url)
+      base = self::Base.new
+      dir = base.download(url, self.repo_path)
+      subcommand = File.basename(dir)
+      source = File.join(dir, subcommand)
+      dest = File.join(self.path, subcommand)
+      base.link(source, dest)
     end
   end
 end
