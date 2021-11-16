@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Get Release Name
+        id: release-name
+        run: 'echo "::set-output name=NAME::$(git tag -l --format="%(contents:subject)" $GITHUB_REF_NAME)"'
+      - name: Create Release Notes
+        run: 'echo "$(git tag -l --format="%(contents:body)" $GITHUB_REF_NAME)" > RELEASE_NOTES'
+      - name: Make Release
+        run: 'gh release create $GITHUB_REF_NAME --title "$TITLE" --notes-file RELEASE_NOTES'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ steps.release-name.outputs.NAME }}
