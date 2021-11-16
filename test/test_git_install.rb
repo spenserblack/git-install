@@ -53,13 +53,13 @@ describe 'Git::Install' do
     end
 
     it 'should call Git.clone' do
-      url = "https://example.com/whatever/repo.git"
+      url = "https://example.com/whatever/my-repo_1.com.git"
       mock = MiniTest::Mock.new
-      mock.expect :clone, FakeBase.new('repo'), [url, 'repo', { path: "/data", depth: 1 }]
+      mock.expect :clone, FakeBase.new('my-repo_1.com'), [url, 'my-repo_1.com', { path: "/data", depth: 1 }]
       install = Git::Install::Base.new(git: mock)
 
       path = install.download(url, "/data")
-      assert_equal "/data/repo", path
+      assert_equal "/data/my-repo_1.com", path
       mock.verify
     end
   end
