@@ -5,6 +5,18 @@
 
 A custom git subcommand to install custom git subcommands
 
+## Installation
+
+```bash
+# After cloning this repo
+
+gem build -o git-install.gem
+
+# This is to prevent the executable from installing to a place not in the PATH,
+# which git would then be unable to discover as a subcommand
+gem install --no-user-install git-install.gem
+```
+
 ## Usage
 
 Pass the clone URL to `git install` to install the subcommand.
