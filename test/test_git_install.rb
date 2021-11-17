@@ -11,27 +11,24 @@ INSTALL_PATH = "GIT_INSTALL_PATH"
 describe 'Git::Install' do
   describe 'path' do
     it 'should get the default install path' do
-      old_env = ENV[INSTALL_PATH]
-      ENV[INSTALL_PATH] = nil
-      assert_equal "/usr/local/bin/", Git::Install.path
-      ENV[INSTALL_PATH] = old_env
+      Helper.set_env(INSTALL_PATH, nil) do
+        assert_equal "/usr/local/bin/", Git::Install.path
+      end
     end
 
     it 'should get the overridden path' do
-      old_env = ENV[INSTALL_PATH]
-      ENV[INSTALL_PATH] = "~/bin/"
-      assert_equal "~/bin/", Git::Install::path
-      ENV[INSTALL_PATH] = old_env
+      Helper.set_env(INSTALL_PATH, "~/bin/") do
+        assert_equal "~/bin/", Git::Install::path
+      end
     end
   end
 
   describe 'repo_path' do
     it 'should get the Linux clone path' do
-      old_home = ENV['HOME']
-      ENV['HOME'] = '/home/foo'
-      expect = '/home/foo/.local/share/git-install'
-      assert_equal expect, Git::Install.repo_path
-      ENV['HOME'] = old_home
+      Helper.set_env('HOME', '/home/foo') do
+        expect = '/home/foo/.local/share/git-install'
+        assert_equal expect, Git::Install.repo_path
+      end
     end
   end
 
