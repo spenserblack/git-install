@@ -4,6 +4,9 @@ gemspec
 
 group :development do
   gem "bundler"
-  gem "minitest"
   gem "rake"
+end
+
+group :test do
+  gem "minitest"
 end

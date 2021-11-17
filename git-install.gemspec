@@ -17,4 +17,7 @@ Gem::Specification.new do |s|
   s.executables << 'git-install'
 
   s.add_runtime_dependency 'git', '~> 1.9'
+
+  s.add_development_dependency 'codecov'
+  s.add_development_dependency 'simplecov'
 end
