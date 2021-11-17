@@ -1,14 +1,18 @@
 require 'git'
-require 'git/install/base'
 
 module Git
   # The main Install driver
   class Install
+    @@file = File
+    @@git = Git
+
     # The default install path for Unix systems
     UNIX_BIN = "/usr/local/bin/"
     # The environment variable to set install path
     INSTALL_PATH = "GIT_INSTALL_PATH"
 
+    # Regex for getting repo path name from URL
+    URL_REGEX = /\/(?<name>[\w\-\.]+)\.git/
     # Gets the path to install the git subcommand to
     def self.path
       install_path = ENV[self::INSTALL_PATH]
@@ -18,21 +22,54 @@ module Git
 
     # Gets the path where the subcommand repositories should be
     def self.repo_path
-      File.join ENV['HOME'], '.local', 'share', 'git-install'
+      @@file.join ENV['HOME'], '.local', 'share', 'git-install'
     end
 
-    def self.download(url)
-      base = self::Base.new
-      base.download(url, self.repo_path)
+    # Downloads (clones) a repository to the data directory
+    #
+    # Returns a path to the Git directory
+    #
+    # repo_path is an optional path where the repo should be cloned to.
+    # Defaults to Install.repo_path
+    def self.download(url, repo_path: nil)
+      path = repo_path || self.repo_path
+      m = self::URL_REGEX.match(url)
+      raise "Cannot match #{url} to get repo name" if m.nil?
+      git = @@git.clone(url, m[:name], path: path, depth: 1)
+      git.dir.to_s
+    end
+
+    # Creates a link to the cloned extension
+    def self.link(source, dest)
+      absolute_source = @@file.absolute_path(source)
+      raise "#{source} is not a file" unless @@file.file? absolute_source
+      @@file.symlink(absolute_source, dest)
     end
 
     def self.install(url)
-      base = self::Base.new
-      dir = base.download(url, self.repo_path)
-      subcommand = File.basename(dir)
-      source = File.join(dir, subcommand)
-      dest = File.join(self.path, subcommand)
-      base.link(source, dest)
+      dir = self.download(url)
+      subcommand = @@file.basename(dir)
+      source = @@file.join(dir, subcommand)
+      dest = @@file.join(self.path, subcommand)
+      self.link(source, dest)
+    end
+
+    private
+
+    def self.mock_file(mock)
+      file = @@file
+      @@file = mock
+      yield
+    ensure
+      @@file = file
+    end
+
+    def self.mock_git(mock)
+      git = @@git
+      @@git = mock
+      yield
+    ensure
+      @@git = git
     end
   end
 end
