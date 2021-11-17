@@ -4,6 +4,8 @@ require 'minitest/autorun'
 require 'minitest/mock'
 require 'minitest/spec'
 
+require 'helper'
+
 INSTALL_PATH = "GIT_INSTALL_PATH"
 
 describe 'Git::Install' do
