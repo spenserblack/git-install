@@ -58,7 +58,11 @@ describe 'Git::Install' do
       mock = MiniTest::Mock.new
       mock.expect :file?, true, ['/data/git-hello/git-hello']
       mock.expect :symlink, 0, ['/data/git-hello/git-hello', '/bin/git-hello']
-      mock.expect :absolute_path, '/data/git-hello/git-hello', ['/data/../data/git-hello/git-hello']
+      mock.expect(
+        :absolute_path,
+        File.absolute_path('/data/../data/git-hello/git-hello'),
+        ['/data/../data/git-hello/git-hello'],
+      )
 
       Git::Install.mock_file(mock) do
         Git::Install.link('/data/../data/git-hello/git-hello', '/bin/git-hello')
@@ -72,18 +76,19 @@ describe 'Git::Install' do
       url = 'https://example.com/repo.git'
       bin_dir = "/bin"
       download_dir = "/data"
+      repo_dir = "#{download_dir}/repo"
 
       mock = MiniTest::Mock.new
-      mock.expect :basename, "repo", ["#{download_dir}/repo"]
+      mock.expect :basename, File.basename(repo_dir), [repo_dir]
       mock.expect(
         :join,
-        "#{download_dir}/repo/repo",
-        ["#{download_dir}/repo", "repo"],
+        File.join(repo_dir, "repo"),
+        [repo_dir, "repo"],
       )
-      mock.expect :join, "#{bin_dir}/repo", [bin_dir, "repo"]
+      mock.expect :join, File.join(bin_dir, "repo"), [bin_dir, "repo"]
 
       Git::Install.mock_file(mock) do
-        Git::Install.stub :download, "#{download_dir}/repo" do
+        Git::Install.stub :download, repo_dir do
           Git::Install.stub :link, 0 do
             Git::Install.stub :path, bin_dir do
               Git::Install.install url
