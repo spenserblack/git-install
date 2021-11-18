@@ -56,20 +56,13 @@ module Git
 
     private
 
-    def self.mock_file(mock)
-      file = @@file
-      @@file = mock
+    def self.mock(sym, mock)
+      full_sym = :"@@#{sym}"
+      old_value = self.class_variable_get(full_sym)
+      self.class_variable_set(full_sym, mock)
       yield
     ensure
-      @@file = file
-    end
-
-    def self.mock_git(mock)
-      git = @@git
-      @@git = mock
-      yield
-    ensure
-      @@git = git
+      self.class_variable_set(full_sym, old_value)
     end
   end
 end

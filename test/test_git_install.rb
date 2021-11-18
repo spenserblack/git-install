@@ -43,7 +43,7 @@ describe 'Git::Install' do
       git_mock = MiniTest::Mock.new
       git_mock.expect :clone, git_base_mock, [url, 'my-repo_1.com', { path: "/data", depth: 1 }]
 
-      Git::Install.mock_git(git_mock) do
+      Git::Install.mock(:git, git_mock) do
         path = Git::Install.download(url, repo_path: "/data")
         assert_equal "/data/my-repo_1.com", path
       end
@@ -64,7 +64,7 @@ describe 'Git::Install' do
         ['/data/../data/git-hello/git-hello'],
       )
 
-      Git::Install.mock_file(mock) do
+      Git::Install.mock(:file, mock) do
         Git::Install.link('/data/../data/git-hello/git-hello', '/bin/git-hello')
       end
       mock.verify
@@ -87,7 +87,7 @@ describe 'Git::Install' do
       )
       mock.expect :join, File.join(bin_dir, "repo"), [bin_dir, "repo"]
 
-      Git::Install.mock_file(mock) do
+      Git::Install.mock(:file, mock) do
         Git::Install.stub :download, repo_dir do
           Git::Install.stub :link, 0 do
             Git::Install.stub :path, bin_dir do
