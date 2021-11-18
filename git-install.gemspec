@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/spenserblack/git-install'
 
   s.executables << 'git-install'
+  s.executables << 'git-uninstall'
 
   s.add_runtime_dependency 'git', '~> 1.9'
 
