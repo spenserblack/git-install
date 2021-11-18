@@ -1,9 +1,11 @@
+require 'fileutils'
 require 'git'
 
 module Git
   # The main Install driver
   class Install
     @@file = File
+    @@fileutils = FileUtils
     @@git = Git
 
     # The default install path for Unix systems
@@ -52,6 +54,15 @@ module Git
       source = @@file.join(dir, subcommand)
       dest = @@file.join(self.path, subcommand)
       self.link(source, dest)
+    end
+
+    # Removes the link and deletes the cloned repository
+    def self.uninstall(subcommand, repo_path: nil)
+      repo = "git-#{subcommand}"
+      cloned_path = @@file.join(repo_path || self.repo_path, repo)
+      link_path = @@file.join(self.path, repo)
+      @@file.delete link_path
+      @@fileutils.remove_dir cloned_path
     end
 
     private
