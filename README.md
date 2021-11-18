@@ -19,16 +19,29 @@ gem install --no-user-install git-install.gem
 
 ## Usage
 
+### Installing a Subcommand
+
 Pass the clone URL to `git install` to install the subcommand.
 
 ```shell
-git install https://repo-host.example.com/user/repo.git
+git install https://repo-host.example.com/user/git-example-subcommand.git
 ```
 
 By default this will attempt to install to `/usr/local/bin/`,
 which will likely require sudo. To install to a different location,
 set the environment variable `GIT_INSTALL_PATH` (make sure that path
 is also on `PATH`!).
+
+### Uninstalling a Subcommand
+
+Pass the *subcommand name* to uninstall the subcommand.
+
+```shell
+git uninstall example-subcommand
+```
+
+Like `git install`, this subcommand can use the `GIT_INSTALL_PATH`
+environment variable.
 
 ## How it Works
 
