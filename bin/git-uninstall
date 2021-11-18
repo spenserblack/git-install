@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+require 'git/install'
+
+subcommand = ARGV[0]
+
+if subcommand.nil?
+  STDERR.puts 'No subcommand name argument supplied'
+  exit 1
+end
+
+puts 'Removing symlink and cloned repo...'
+Git::Install.uninstall subcommand
+puts 'Done!'

@@ -100,4 +100,37 @@ describe 'Git::Install' do
       mock.verify
     end
   end
+
+  describe 'uninstall' do
+    it 'should delete the symlink and the whole repository' do
+      file_mock = MiniTest::Mock.new
+      file_mock.expect(
+        :join,
+        File.join("/data", "git-example"),
+        ["/data", "git-example"],
+      )
+      file_mock.expect(
+        :join,
+        File.join("/bin", "git-example"),
+        ["/bin", "git-example"],
+      )
+      file_mock.expect :delete, nil, ["/bin/git-example"]
+
+      fileutils_mock = MiniTest::Mock.new
+      fileutils_mock.expect :remove_dir, nil, ["/data/git-example"]
+
+      Git::Install.stub :repo_path, "/data" do
+        Git::Install.stub :path, "/bin" do
+          Git::Install.mock :file, file_mock do
+            Git::Install.mock :fileutils, fileutils_mock do
+              Git::Install.uninstall "example"
+            end
+          end
+        end
+      end
+
+      file_mock.verify
+      fileutils_mock.verify
+    end
+  end
 end
