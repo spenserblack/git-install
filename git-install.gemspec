@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Install git subcommands'
   s.description = 'Install custom git subcommands from their repositories'
   s.authors     = ['Spenser Black']
-  s.files       = ['lib/git/install.rb', 'lib/git/install/base.rb']
+  s.files       = ['lib/git/install.rb']
   s.license     = 'MIT'
   s.homepage    = 'https://github.com/spenserblack/git-install'
 
